@@ -17,7 +17,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from source.config import Config
 
 class PredictionThread(QThread):
-    # 스레드가 완료되었을 때 결과를 전달하는 시그널
     finished = pyqtSignal(pd.DataFrame)
     error = pyqtSignal(str)
 
@@ -45,11 +44,10 @@ class PredictionThread(QThread):
                 self.update,
                 self.constrain_to_last
             )
-            # 결과를 emit
             self.finished.emit(result)
         except Exception as e:
-            # 오류 발생 시 에러 메시지 emit
             self.error.emit(str(e))
+            
 def set_seed():
     seed = Config.RANDOM_SEED
     np.random.seed(seed)
