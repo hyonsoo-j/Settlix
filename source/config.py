@@ -1,27 +1,30 @@
 from pathlib import Path
 import torch
+import sys
 
 class Config:
-    # Application settings
     APP_NAME = "Settlix"
-    APP_VERSION = "1.1.1"
+    APP_VERSION = "v.1.5"
     
     DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    # UI settings
-    BASE_PATH = Path(__file__).resolve().parent.parent
-    SPLASH_SCREEN_DURATION = 2000  # in milliseconds
+    @staticmethod
+    def get_base_path():
+        if hasattr(sys, '_MEIPASS'):
+            return Path(sys._MEIPASS)
+        return Path(__file__).resolve().parent.parent
+
+    BASE_PATH = get_base_path.__func__()
+
+    SPLASH_SCREEN_DURATION = 2000  
     SPLASH_SCREEN_IMAGE_PATH = str(BASE_PATH / "resource" / "img" / "splash_img.png")
     UI_PATH = str(BASE_PATH / "resource" / "ui")
 
-    # Graph settings
     GRAPH_WIDTH = 500
 
-    # Data settings
     DATA_COLUMNS = ['settlement', 'fill_height']
 
-    # Font settings
-    FONT_PATH = "arial.ttf"
+    FONT_PATH = str(BASE_PATH / "resource" / "fonts" / "arial.ttf") 
     FONT_SIZE = 12
 
     RANDOM_SEED = 1

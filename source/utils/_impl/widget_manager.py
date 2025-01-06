@@ -8,6 +8,8 @@ def set_widget_state(ui, state):
     ui.csv_pushbutton.setEnabled(state)
     ui.help_pushbutton.setEnabled(state)
 
+    ui.help_pushbutton.setEnabled(False)
+
 def enable_widgets(ui):
     set_widget_state(ui, True)
 

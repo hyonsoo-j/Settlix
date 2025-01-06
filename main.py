@@ -1,3 +1,4 @@
+import os
 import sys
 import traceback
 from PyQt5.QtWidgets import QApplication
@@ -13,6 +14,7 @@ def main():
 
         splash_pix = QPixmap(Config.SPLASH_SCREEN_IMAGE_PATH)
         splash_pix = splash_pix.scaled(600, 400, Qt.KeepAspectRatio)
+
         splash = SplashScreen(splash_pix, Config.SPLASH_SCREEN_DURATION)
         splash.show()
 
@@ -25,5 +27,6 @@ def main():
         print(f"Error: {e}")
         print("Traceback (most recent call last):")
         print(tb)
+
 if __name__ == "__main__":
     main()

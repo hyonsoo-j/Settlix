@@ -2,20 +2,18 @@ import os
 import sys
 import pandas as pd
 import pyqtgraph as pg
-from pathlib import Path
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 
 from .data_window import DataWindow
 from .height_window import GraphWindow
-from source.utils import save_to_png, save_to_csv, enable_widgets, disable_widgets, load_csv_file, link_x_axes, plot_graphs
 from source.models import PredictionThread
 from source.config import Config
+from source.utils import save_to_png, save_to_csv, enable_widgets, disable_widgets, load_csv_file, link_x_axes, plot_graphs
 
 pg.mkQApp()
 pg.setConfigOption('background', 'w')
 
-base_path = Path(__file__).parent.parent.parent.parent
-ui_path = os.path.join(os.path.dirname(__file__), Config.UI_PATH, 'main_window.ui')
+ui_path = os.path.join(Config.UI_PATH, 'main_window.ui')
 WindowTemplate, TemplateBaseClass = pg.Qt.loadUiType(ui_path)
 
 classifications = {
@@ -28,7 +26,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = WindowTemplate()
         self.ui.setupUi(self)
-        self.setWindowTitle(f"{Config.APP_NAME} v.{Config.APP_VERSION}")
+        self.setWindowTitle(f"{Config.APP_NAME} {Config.APP_VERSION}")
         self.initialize_ui() 
         self.initialize_variables()
         self.initialize_status()
@@ -55,6 +53,7 @@ class MainWindow(QMainWindow):
         self.ui.img_pushbutton.clicked.connect(self.save_figure)       
         self.ui.csv_pushbutton.clicked.connect(self.save_csv)  
         self.ui.help_pushbutton.clicked.connect(self.help)
+        self.ui.help_pushbutton.setEnabled(False)
 
         self.ui.actionOpen.triggered.connect(self.open_file)
         self.ui.actionExit.triggered.connect(self.close)
@@ -344,7 +343,7 @@ class MainWindow(QMainWindow):
             selected_model = self.ui.model_combobox.currentText()
             predict_date = self.ui.predict_lineedit.text()
 
-            output_file_name = save_to_png(self.data, base_path, file_name, selected_model, self.present_date, predict_date)
+            output_file_name = save_to_png(self.data, file_name, selected_model, self.present_date, predict_date)
             self.ui.log_textbrowser.append(f"\nGraph has been saved as [{output_file_name}].")
 
         except Exception as e:
@@ -360,7 +359,7 @@ class MainWindow(QMainWindow):
             selected_model = self.ui.model_combobox.currentText()
             predict_date = self.ui.predict_lineedit.text()
 
-            output_file_name = save_to_csv(self.data, base_path, file_name, selected_model, predict_date)
+            output_file_name = save_to_csv(self.data, file_name, selected_model, predict_date)
             self.ui.log_textbrowser.append(f"\nCSV file has been saved as [{output_file_name}].")
 
         except Exception as e:

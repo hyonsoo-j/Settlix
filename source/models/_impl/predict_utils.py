@@ -4,6 +4,7 @@ from . import hyperparameters
 from .data_utils import reconstruct_dataframe
 from .model_utils import update_model
 
+from pathlib import Path
 import neuralprophet
 import random
 import json
@@ -82,15 +83,14 @@ def get_class_name(data, data_config, classification):
     print(f'class_name: {class_name}')
     return class_name
 
-# BASE_PATH/resource/models/class/model_name/m_n
 def get_model(data, data_config, model_name, classification):
     class_name = get_class_name(data, data_config, classification)
-    base_model_path = os.path.join(Config.BASE_PATH, "resource", "models", "clay_class")
+    base_model_path = Path(Config.BASE_PATH) / "resource" / "models" / "clay_class"
         
-    model_path = os.path.join(base_model_path, model_name, f"{model_name}_{class_name}.pt")
-    properties_path = os.path.join(base_model_path, model_name, f"{model_name}_{class_name}_properties.json")
-    scaler_path = os.path.join(base_model_path, model_name, f"{model_name}_{class_name}_scaler.pkl")
-    np_model_path = os.path.join(base_model_path, 'NP', f"NP_{class_name}.np")
+    model_path = base_model_path / model_name / f"{model_name}_{class_name}.pt"
+    properties_path = base_model_path / model_name / f"{model_name}_{class_name}_properties.json"
+    scaler_path = base_model_path / model_name / f"{model_name}_{class_name}_scaler.pkl"
+    np_model_path = base_model_path / "NP" / f"NP_{class_name}.np"
     
     with open(properties_path, 'r') as json_file:
         model_properties = json.load(json_file)
