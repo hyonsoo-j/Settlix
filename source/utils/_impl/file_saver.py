@@ -1,3 +1,5 @@
+import os
+import sys
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,7 +11,7 @@ from source.config import Config
 
 def save_to_png(data_dict, file_name, selected_model, present_date, predict_date, line_style='solid'):
 
-    output_dir = Path(Config.BASE_PATH) / 'outputs' / 'png'
+    output_dir = Path(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))) / 'outputs' / 'png'
     output_dir.mkdir(parents=True, exist_ok=True)
     
     df = reconstruct_dataframe(data_dict)
@@ -101,6 +103,7 @@ def save_to_png(data_dict, file_name, selected_model, present_date, predict_date
     
     start_date_str = current_time.strftime('%Y%m%d')
     end_date_str = df['Date'].iloc[-1].strftime('%Y%m%d')
+    
     output_file_name = f"Settlement_Prediction_{file_name}_{selected_model}_{start_date_str}_to_{end_date_str}.png"
     output_file_path = output_dir / output_file_name
     
@@ -112,7 +115,7 @@ def save_to_png(data_dict, file_name, selected_model, present_date, predict_date
     return output_file_path
 
 def save_to_csv(data_dict, file_name, selected_model, predict_date):
-    output_dir = Path(Config.BASE_PATH) / 'outputs' / 'csv'
+    output_dir = Path(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))) / 'outputs' / 'png'
     output_dir.mkdir(parents=True, exist_ok=True)
 
     output_file_name = f"Settlement_Prediction_{file_name}_{selected_model}_{predict_date}.csv"
